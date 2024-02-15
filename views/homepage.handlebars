@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Show Tracker</title>
+        <link rel="stylesheet", href="./style.css">
+
+        <script src="./index.js" charset="utf-8" defer></script>
+
+    </head>
+    
+    <body>
+        <header>
+            <!-- Main title text -->
+            <div class="title-container">
+                <h1 class="title-text">
+                    Show Tracker
+                </h1>
+            </div>
+        </header>
+
+        <main class="main-content">            
+            <!-- Add/View submissions buttons -->
+            <div class="submission-container">
+                <p class="site-introduction">   
+                    Welcome to plagiarism checker! Add submissions below to compare the plagiarism between documents.
+                </p>
+                <div id="title-input-text" class="textbox-content">
+                    Title of text:<br> 
+                    <!--<input type="text" id="title-input" class="upload-textbox"> -->
+                    <textarea id="title-input" class="upload-textbox" rows="1" cols="50"></textarea>
+                </div>
+                <div id="text-input-text" class="textbox-content">
+                    Text for submission:<br>
+                    <!--<input type="text" id="submission-input" class="upload-textbox"> -->
+                    <textarea id="submission-input" class="upload-textbox" rows="15" cols="50"></textarea>
+                </div>
+                <button id="upload-text-button" class="submission-button">Upload Text</button>
+                <button id="clear-text-button" class="submission-button">Clear</button>
+            </div>
+
+            <!-- Document container for text uploaded -->
+            <section id="document-container">
+                <!-- Currently viewing tab shown in rough sketch -->
+                <div class="currently-viewing-container">
+                    <span class="currently-viewing-text">Currently Viewing: </span> <span id="currently-viewing">Dummy Text</span>
+                </div>
+                <div id="text-display">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+                    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+                    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+                    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+                    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+                    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+                    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+                    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+            </section>
+
+            <!-- Aside for the matching parts of text and resulting percentage -->
+            <aside id="plagiarism-results">
+                Plagiarism found in documents: 
+                <div id="plagiarized-documents">
+                    
+                </div>
+                <!--<div class="plagiarism-precentage-container">
+                    <span class="plagiarism-precentage-text">Plagiarism Score: <span class="plagiarism-percentage-results">0</span>%</span>
+                </div> -->
+            </aside>
+        </main>
+    </body>
+</html>
