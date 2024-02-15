@@ -3,9 +3,9 @@
     <head>
         <meta charset="utf-8">
         <title>Show Tracker</title>
-        <link rel="stylesheet", href="./style.css">
+        <link rel="stylesheet", href="../style.css">
 
-        <script src="./index.js" charset="utf-8" defer></script>
+        <script src="../index.js" charset="utf-8" defer></script>
 
     </head>
     
@@ -47,17 +47,20 @@
                     <a href="/profile" class="profile-button">Profile</a>
                 </div>
             </div>
-
-            <div class="profile-shows-label">Your Shows</div>
-            <div class="profile-shows">
-                <div class="show">
-
-                </div>
+            
+            <div class="profile-form-label">
+                Profile
             </div>
+            <div class="profile-form-container">
+                <form class="profile-form" action="/profile" method="POST">
+                    <label for="name-input">Name: </label>
+                    <input type="text" id="name-input" name="name-input" {{#if name}}placeholder="{{name}}"{{/if}}>
+                    <label for="description-input">Description: </label>
+                    <input type="text" id="description-input" name="description-input" {{#if description}}placeholder="{{description}}"{{/if}}>
 
-            <div class="recommended-shows-label">Recommended Shows</div>
-            <div class="recommended-shows">
-
+                    <button type="submit" class="update-profile">Submit</button>
+                    <button type="reset" class="reset-profile">Reset</button>
+                </form>
             </div>
             
         </main>
