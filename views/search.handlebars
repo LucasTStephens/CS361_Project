@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Show Tracker</title>
+        <link rel="stylesheet", href="./style.css">
+
+        <script src="./index.js" charset="utf-8" defer></script>
+
+    </head>
+    
+    <body>
+        <header>
+            <!-- Main title text -->
+            <div class="title-container">
+                <h1 class="title-text">
+                    Show Tracker
+                </h1>
+            </div>
+        </header>
+
+
+        <div id="side-menu">
+            <a href="/homepage" class="homepage-button">
+                Homepage
+            </a>
+            <a href="/shows/profile" class="my-shows-button">
+                My Shows
+            </a>
+            <a href="/shows/recommended" class="recommended-shows-button">
+                Recommended Shows
+            </a>
+        </div>
+
+        <main id="main-content">            
+
+            <div class="top-container">
+                <a href="#" class="nav" onclick="toggleNav()">
+                    <div class="one"></div>
+                    <div class="two"></div>
+                    <div class="three"></div>
+                </a>
+                <div class="search-bar-container">
+                    <form action="/search" method="GET">
+                        <input type="text" name="search-bar" id="search-bar" class="filter-input" placeholder="Search">
+                    </form>
+                </div>
+                <div class="profile-button-container">
+                    <a href="/profile" class="profile-button">Profile</a>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
