@@ -67,8 +67,8 @@ app.get('*', function (req, res) {
     res.status(404).render("404")
 })
 
-app.listen(3231, () => {
-    console.log(`Server is running on http://flip1.engr.oregonstate.edu:3231/`);
+app.listen(3000, () => {
+    console.log(`Server is running on http://localhost:3000/`);
 })
 
 // Code to register a user if they are not already in the system
