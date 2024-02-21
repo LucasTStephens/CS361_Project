@@ -81,7 +81,7 @@ app.post("/signup", (req, res) => {
             console.log(error)
         }
         if( ress.length > 0 ) {
-                return res.render('signup', {
+            return res.render('signup', {
                 message: 'This email is already in use'
             })
         }
@@ -122,7 +122,7 @@ app.post("/login", (req, res) => {
     }
         if( ress.length > 0 ) {
             db.query('SELECT name, description FROM profiles WHERE email = ?', [email], async (error, resss) => {
-                console.log(resss)
+                // can save name and description here
             })
             return res.render('homepage')
         }
@@ -135,12 +135,15 @@ app.post("/profile", (req, res) => {
     const name = req.body['name-input']
     const description = req.body['description-input']
 
-    db.query('UPDATE profiles SET name = "?", description = "?" WHERE email = "?"'), [name, description, email], async (error, ress) => {
+    db.query('UPDATE profiles SET name = ?, description = ? WHERE email = ?', [name, description, email], async (error, ress) => {
         if (error){
             console.log(error)
         }
-        return res.render("profile", {
-            message: "Profile Updated!"
-        })
-    }
+        else {
+            
+            return res.render("profile", {
+                message: "Profile Updated!"
+            })
+        }
+    })
 })

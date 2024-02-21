@@ -49,7 +49,7 @@
             </div>
             
             <div class="profile-form-label">
-                Profile
+                Profile: show other people who you are! Warning: updates to this are public
             </div>
             <div class="profile-form-container">
                 <form class="profile-form" action="/profile" method="POST">
@@ -57,11 +57,18 @@
                     <input type="text" id="name-input" name="name-input" {{#if name}}placeholder="{{name}}"{{/if}}>
                     <label for="description-input">Description: </label>
                     <input type="text" id="description-input" name="description-input" {{#if description}}placeholder="{{description}}"{{/if}}>
+                    <label for="genre-input">Favorite Genre: </label>
+                    <select id="genre-input" name="genre-input">
+                        <option value="test">test</option>
+                    </select>
 
                     <button type="submit" class="update-profile">Submit</button>
                     <button type="reset" class="reset-profile">Reset</button>
                 </form>
             </div>
+            {{#if message}}
+                <h1 class="alert-message">{{message}}</h1>
+            {{/if}}
             
         </main>
     </body>
