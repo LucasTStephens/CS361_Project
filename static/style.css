@@ -140,3 +140,12 @@ body {
 #description-input {
     height: 50px;
 }
+
+#search-bar {
+    height: 25px;
+    width: 200px;
+    border-radius: 20px;
+    border: 2px;
+    border-color: black;
+    border-style: solid;
+}
