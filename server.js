@@ -11,7 +11,7 @@ var userid = 0;
 var userEmail = "";
 var userName = "";
 var userDescription = "";
-var favoriteGenre = 0;
+var userGenre = 0;
 
 dotenv.config({ path: './.env'})
 
@@ -56,9 +56,12 @@ app.get("/signup", function(req, res){
 
 app.get("/homepage", function(req, res){
     db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ress) => {
-        res.status(200).render("homepage", {
-            show: ress,
-            genre: genreInfo
+        db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE shows.name != (SELECT shows.name FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid WHERE profiles_shows.uid = ?) AND genres.gid = ?', [userid, userGenre], async (error, resss) => {
+            res.status(200).render("homepage", {
+                show: ress,
+                recommendedShow: resss,
+                genre: genreInfo
+            })
         })
     })
 })
@@ -140,11 +143,14 @@ app.post("/login", (req, res) => {
                 userid = resss[0].uid
                 userName = resss[0].name
                 userDescription = resss[0].description
-                favoriteGenre = resss[0].favoriteGenre
+                userGenre = resss[0].favoriteGenre
                 db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ressss) => {
-                    res.status(200).render("homepage", {
-                        show: ressss,
-                        genre: genreInfo
+                    db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE shows.name != (SELECT shows.name FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid WHERE profiles_shows.uid = ?) AND genres.gid = ?', [userid, userGenre], async (error, resssss) => {
+                        res.status(200).render("homepage", {
+                            show: ressss,
+                            recommendedShow: resssss,
+                            genre: genreInfo
+                        })
                     })
                 })
             })
@@ -164,6 +170,9 @@ app.post("/profile", (req, res) => {
             console.log(error)
         }
         else {
+            userName = name
+            userDescription = description
+            userGenre = favoriteGenre
             res.status(200).render("profile", {
                 genre: genreInfo,
                 message: "Profile Updated!"
@@ -184,19 +193,26 @@ app.post("/homepage", (req, res) => {
             db.query('SELECT * FROM profiles_shows WHERE sid = ? AND uid = ?', [ress[0].name, userid], async (error, resss) => {
                 if (resss.length > 0) {
                     db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ressss) => {
-                        res.status(200).render("homepage", {
-                            show: ressss,
-                            message: 'Show is already on your list',
-                            genre: genreInfo
+                        db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE shows.name != (SELECT shows.name FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid WHERE profiles_shows.uid = ?) AND genres.gid = ?', [userid, userGenre], async (error, resssss) => {
+                            res.status(200).render("homepage", {
+                                show: ressss,
+                                message: 'Show is already on your list',
+                                recommendedShow: resssss,
+                                genre: genreInfo
+                            })
                         })
+                        
                     })
                 }
                 else {
                     db.query('INSERT INTO profiles_shows (uid, sid) VALUES (?, (SELECT sid FROM shows WHERE name = ?))', [userid, name], async (error, resss) => {
                         db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ressss) => {
-                            res.status(200).render("homepage", {
-                                show: ressss,
-                                genre: genreInfo
+                            db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE shows.name != (SELECT shows.name FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid WHERE profiles_shows.uid = ?) AND genres.gid = ?', [userid, userGenre], async (error, resssss) => {
+                                res.status(200).render("homepage", {
+                                    show: ressss,
+                                    recommendedShow: resssss,
+                                    genre: genreInfo
+                                })
                             })
                         })
                     })
@@ -215,9 +231,12 @@ app.post("/homepage", (req, res) => {
                         }
                         else {
                             db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ressss) => {
-                                res.status(200).render("homepage", {
-                                    show: ressss,
-                                    genre: genreInfo
+                                db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE shows.name != (SELECT shows.name FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid WHERE profiles_shows.uid = ?) AND genres.gid = ?', [userid, userGenre], async (error, resssss) => {
+                                    res.status(200).render("homepage", {
+                                        show: ressss,
+                                        recommendedShow: resssss,
+                                        genre: genreInfo
+                                    })
                                 })
                             })
                         }

@@ -46,7 +46,8 @@ body {
     margin-bottom: 5%;
 }
 
-.profile-shows {
+.profile-shows,
+.recommended-shows {
     display: flex;
     height: 33%;
     width: 100%;
@@ -54,14 +55,6 @@ body {
     border-color: black;
     border-width: 2px;
     margin-bottom: 5%;
-}
-
-.recommended-shows {
-    height: 33%;
-    width: 100%;
-    border-style: solid;
-    border-color: black;
-    border-width: 2px;
 }
 
 .nav div {
