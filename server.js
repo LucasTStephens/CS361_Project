@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs")
 
 var app = express()
 
+var userid = 0;
 var userEmail = "";
 var userName = "";
 var userDescription = "";
@@ -36,6 +37,11 @@ app.use(express.json())
 app.engine("handlebars", exphbs.engine({defaultLayout: null}))
 app.set("view engine", "handlebars")
 
+var genreInfo = "";
+db.query('SELECT gid, gname FROM genres', async (error, ress) => {
+    genreInfo = ress;
+})
+
 app.get("/", function(req, res){
     res.status(200).render("login")
 })
@@ -49,7 +55,12 @@ app.get("/signup", function(req, res){
 })
 
 app.get("/homepage", function(req, res){
-    res.status(200).render("homepage")
+    db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ress) => {
+        res.status(200).render("homepage", {
+            show: ress,
+            genre: genreInfo
+        })
+    })
 })
 
 app.get("/shows/recommended", function(req, res){
@@ -60,12 +71,9 @@ app.get("/shows/profile", function(req, res){
     res.status(200).render("profileShows")
 })
 
-app.get("/profile", function(req, res){
-    db.query('SELECT gid, name FROM genres', async (error, ress) => {
-        
-        res.status(200).render("profile", {
-            genre: ress
-        })
+app.get("/profile", function(req, res){ 
+    res.status(200).render("profile", {
+        genre: genreInfo
     })
 })
 
@@ -123,24 +131,30 @@ app.post("/login", (req, res) => {
         }
         if( ress.length == 0 ) {
             return res.render('login', {
-            message: 'Email or password incorrect'
-        })
-    }
+                message: 'Email or password incorrect'
+            })
+        }
         if( ress.length > 0 ) {
-            db.query('SELECT name, description, favoriteGenre FROM profiles WHERE email = ?', [email], async (error, resss) => {
+            db.query('SELECT uid, name, description, favoriteGenre FROM profiles WHERE email = ?', [email], async (error, resss) => {
                 userEmail = email
+                userid = resss[0].uid
                 userName = resss[0].name
                 userDescription = resss[0].description
                 favoriteGenre = resss[0].favoriteGenre
+                db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ressss) => {
+                    res.status(200).render("homepage", {
+                        show: ressss,
+                        genre: genreInfo
+                    })
+                })
             })
-            return res.render('homepage')
         }
     })
     
 })
 
 app.post("/profile", (req, res) => {
-    const email = 'email@email.com'
+    const email = userEmail
     const name = req.body['name-input']
     const description = req.body['description-input']
     const favoriteGenre = req.body['genre-input']
@@ -150,12 +164,65 @@ app.post("/profile", (req, res) => {
             console.log(error)
         }
         else {
-            db.query('SELECT gid, name FROM genres', async (error, ress) => {
-        
-                res.status(200).render("profile", {
-                    genre: ress,
-                    message: "Profile Updated!"
-                })
+            res.status(200).render("profile", {
+                genre: genreInfo,
+                message: "Profile Updated!"
+            })
+        }
+    })
+})
+
+
+// Checks if there is already a show existing and adds it to list if not already added.
+app.post("/homepage", (req, res) => {
+    const name = req.body['show-title-input']
+    const genre = req.body['show-genre-input']
+
+    db.query('SELECT sid FROM shows WHERE name = ?', [name], async (error, ress) => {
+        if (ress.length > 0) {
+            console.log(ress)
+            db.query('SELECT * FROM profiles_shows WHERE sid = ? AND uid = ?', [ress[0].name, userid], async (error, resss) => {
+                if (resss.length > 0) {
+                    db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ressss) => {
+                        res.status(200).render("homepage", {
+                            show: ressss,
+                            message: 'Show is already on your list',
+                            genre: genreInfo
+                        })
+                    })
+                }
+                else {
+                    db.query('INSERT INTO profiles_shows (uid, sid) VALUES (?, (SELECT sid FROM shows WHERE name = ?))', [userid, name], async (error, resss) => {
+                        db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ressss) => {
+                            res.status(200).render("homepage", {
+                                show: ressss,
+                                genre: genreInfo
+                            })
+                        })
+                    })
+                }
+            })
+        }
+        else {
+            db.query('INSERT INTO shows (name, gid) VALUES (?, ?)', [name, genre], async (error, ress) => {
+                if (error) {
+                    console.log(error)
+                }
+                else {
+                    db.query('INSERT INTO profiles_shows (uid, sid) VALUES (?, (SELECT sid FROM shows WHERE name = ?))', [userid, name], async (error, resss) => {
+                        if (error) {
+                            console.log(error)
+                        }
+                        else {
+                            db.query('SELECT shows.name, genres.gname FROM profiles_shows JOIN shows ON profiles_shows.sid = shows.sid JOIN genres ON shows.gid = genres.gid WHERE profiles_shows.uid = ?', [userid], async (error, ressss) => {
+                                res.status(200).render("homepage", {
+                                    show: ressss,
+                                    genre: genreInfo
+                                })
+                            })
+                        }
+                    })
+                }
             })
         }
     })
