@@ -7,6 +7,11 @@ const bcrypt = require("bcryptjs")
 
 var app = express()
 
+var userEmail = "";
+var userName = "";
+var userDescription = "";
+var favoriteGenre = 0;
+
 dotenv.config({ path: './.env'})
 
 const db = mysql.createConnection({
@@ -15,7 +20,6 @@ const db = mysql.createConnection({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
 })
-
 
 db.connect((error) => {
     if(error) {
@@ -57,9 +61,11 @@ app.get("/shows/profile", function(req, res){
 })
 
 app.get("/profile", function(req, res){
-    res.status(200).render("profile", {
-        name: "placeholder",
-        description: "placeholder"
+    db.query('SELECT gid, name FROM genres', async (error, ress) => {
+        
+        res.status(200).render("profile", {
+            genre: ress
+        })
     })
 })
 
@@ -121,8 +127,11 @@ app.post("/login", (req, res) => {
         })
     }
         if( ress.length > 0 ) {
-            db.query('SELECT name, description FROM profiles WHERE email = ?', [email], async (error, resss) => {
-                // can save name and description here
+            db.query('SELECT name, description, favoriteGenre FROM profiles WHERE email = ?', [email], async (error, resss) => {
+                userEmail = email
+                userName = resss[0].name
+                userDescription = resss[0].description
+                favoriteGenre = resss[0].favoriteGenre
             })
             return res.render('homepage')
         }
@@ -134,15 +143,19 @@ app.post("/profile", (req, res) => {
     const email = 'email@email.com'
     const name = req.body['name-input']
     const description = req.body['description-input']
+    const favoriteGenre = req.body['genre-input']
 
-    db.query('UPDATE profiles SET name = ?, description = ? WHERE email = ?', [name, description, email], async (error, ress) => {
+    db.query('UPDATE profiles SET name = ?, description = ?, favoriteGenre = ? WHERE email = ?', [name, description, favoriteGenre, email], async (error, ress) => {
         if (error){
             console.log(error)
         }
         else {
-            
-            return res.render("profile", {
-                message: "Profile Updated!"
+            db.query('SELECT gid, name FROM genres', async (error, ress) => {
+        
+                res.status(200).render("profile", {
+                    genre: ress,
+                    message: "Profile Updated!"
+                })
             })
         }
     })

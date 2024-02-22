@@ -5,5 +5,4 @@ function toggleNav() {
     main.classList.toggle("slideout");
     menu = document.getElementById("main-content")
     menu.classList.toggle("slideout");
-  }
-  
+}
