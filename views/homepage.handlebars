@@ -34,34 +34,81 @@
 
         <main id="main-content">            
 
-            <div class="top-container">
-                <a href="#" class="nav" onclick="toggleNav()">
-                    <div class="one"></div>
-                    <div class="two"></div>
-                    <div class="three"></div>
-                </a>
-                <div class="search-bar-container">
-                    <form action="/search" method="GET">
-                        <input type="text" name="search-bar" id="search-bar" class="filter-input" placeholder="Search">
-                    </form>
-                </div>
-                <div class="profile-button-container">
-                    <a href="/profile" class="profile-button">Profile</a>
-                </div>
-            </div>
+          <div class="top-container">
+              <a href="#" class="nav" onclick="toggleNav()">
+                  <div class="one"></div>
+                  <div class="two"></div>
+                  <div class="three"></div>
+              </a>
+              <div class="search-bar-container">
+                  <form action="/search" method="GET">
+                      <input type="text" name="search-bar" id="search-bar" class="filter-input" placeholder="Search">
+                  </form>
+              </div>
+              <div class="profile-button-container">
+                  <a href="/profile" class="profile-button">Profile</a>
+              </div>
+          </div>
 
-            <div class="profile-shows-label">Your Shows</div>
-            <div class="profile-shows">
-                <div class="show">
+          {{#if message}}<h1>{{message}}</h1>{{/if}}
+          <div class="profile-shows-label">Your Shows</div>
+          <div class="profile-shows">
+              <div class="add-show">
+                  <button id="add-show-button">+</button>
+              </div>
+              {{#each show}}
+                  <div class="show">
+                      <p>{{name}} : {{gname}}</p>
+                  </div>
+              {{/each}}
+          </div>
 
-                </div>
-            </div>
-
-            <div class="recommended-shows-label">Recommended Shows</div>
-            <div class="recommended-shows">
-
-            </div>
+          <div class="recommended-shows-label">Recommended Shows</div>
+          <div class="recommended-shows">
+              <div class="random-show">
+                  <button id="random-show-button">X</button>
+              </div>
+              {{#each recommendedShow}}
+                  <div class="show">
+                      <p>{{name}} : {{gname}}</p>
+                  </div>
+              {{/each}}
+          </div>
             
+
+
+          <div id="modal-backdrop" class="hidden"></div>
+          <div id="add-show-modal" class="hidden">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                <h3>Add a show to your list</h3>
+                <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
+              </div>
+              <form action="/homepage" method="POST">
+                <div class="modal-body">
+
+                  <div class="show-input-element">
+                    <label for="show-title-input">Show Title</label>
+                    <input type="text" name="show-title-input" id="show-title-input"></input>
+                  </div>
+
+                  <label for="show-genre-input">Genre</label>
+                  <select id="show-genre-input" name="show-genre-input">
+                    {{#each genre}}
+                      <option value="{{gid}}">{{gname}}</option>
+                    {{/each}}
+                  </select>
+
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" id="modal-accept" class="action-button">Add Show</button>
+                  <button type="button" id="modal-cancel" class="modal-hide-button">Cancel</button>
+                </div>
+              </form>
+
+          </div>
+          </div>
         </main>
     </body>
 </html>

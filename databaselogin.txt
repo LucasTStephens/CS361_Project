@@ -1,0 +1,2 @@
+mysql -u cs340_stephluc -h classmysql.engr.oregonstate.edu -p cs340_stephluc
+pass: 6881

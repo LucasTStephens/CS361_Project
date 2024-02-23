@@ -59,7 +59,9 @@
                     <input type="text" id="description-input" name="description-input" {{#if description}}placeholder="{{description}}"{{/if}}>
                     <label for="genre-input">Favorite Genre: </label>
                     <select id="genre-input" name="genre-input">
-                        <option value="test">test</option>
+                        {{#each genre}}
+	                        <option value="{{gid}}">{{gname}}</option>
+                        {{/each}}
                     </select>
 
                     <button type="submit" class="update-profile">Submit</button>
