@@ -5,8 +5,6 @@
         <title>Show Tracker</title>
         <link rel="stylesheet", href="./style.css">
 
-        <script src="./index.js" charset="utf-8" defer></script>
-
     </head>
     
     <body>
@@ -67,6 +65,7 @@
           <div class="recommended-shows">
               <div class="random-show">
                   <button id="random-show-button">X</button>
+                  <div id="random-show-container"></div>
               </div>
               {{#each recommendedShow}}
                   <div class="show">
@@ -110,5 +109,7 @@
           </div>
           </div>
         </main>
+
+        <script src="./index.js" charset="utf-8" defer></script>
     </body>
 </html>

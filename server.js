@@ -5,6 +5,8 @@ const mysql = require("mysql")
 const dotenv = require('dotenv')
 const bcrypt = require("bcryptjs")
 
+require('dotenv').config();
+
 var app = express()
 
 var userid = 0;
@@ -66,9 +68,17 @@ app.get("/homepage", function(req, res){
     })
 })
 
-app.get("/shows/recommended", function(req, res){
-    res.status(200).render("recommendedShows")
-})
+app.get('/shows/recommended', function(req, res){
+    const possibleShows = 4; // Array of possible shows
+    axios.post('http://localhost:3001', { shows: possibleShows })
+        .then(response => {
+            const randomShow = response.data.randomShow;
+            // Display the random show in the UI
+        })
+        .catch(error => {
+            console.error(error);
+        });
+});
 
 app.get("/shows/profile", function(req, res){
     res.status(200).render("profileShows")

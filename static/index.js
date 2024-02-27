@@ -15,6 +15,19 @@ function toggleModal() {
     modalBackdrop.classList.toggle('hidden')
 }
 
+function selectRandomShow() {
+    fetch('http://localhost:3001/random-show')
+        .then(response => response.json())
+        .then(data => {
+            var randomShow = data.randomShow;
+            var randomShowContainer = document.getElementById('random-show-container');
+            randomShowContainer.innerHTML = `<p>${randomShow.name} : ${randomShow.gname}</p>`;
+        })
+        .catch(error => {
+            console.error('Error selecting random show:', error);
+        });
+}
+
 window.addEventListener('DOMContentLoaded', function () {
     var addPostButton = document.getElementById('add-show-button')
     if (addPostButton) {
@@ -29,5 +42,10 @@ window.addEventListener('DOMContentLoaded', function () {
     var modalCloseButton = document.getElementById('modal-close')
     if (modalCloseButton) {
         modalCloseButton.addEventListener('click', toggleModal)
+    }
+
+    var randomShowButton = document.getElementById('random-show-button');
+    if (randomShowButton) {
+        randomShowButton.addEventListener('click', selectRandomShow);
     }
 })
