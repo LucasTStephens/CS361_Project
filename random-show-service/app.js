@@ -40,6 +40,6 @@ app.get('/random-show', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Random Show Microservice running on http://localhost:${PORT}`);
+app.listen(3001, () => {
+    console.log(`Random Show Microservice running on http://localhost:3001`);
 });
